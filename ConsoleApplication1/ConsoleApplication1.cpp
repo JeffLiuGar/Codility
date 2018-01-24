@@ -5,7 +5,7 @@
 #include <vector>
 #include <algorithm>
 using namespace std;
-
+///
 
 int Distinct(vector<int> &A) {
 	/*
