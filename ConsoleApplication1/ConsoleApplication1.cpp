@@ -6,6 +6,64 @@
 #include <algorithm>
 using namespace std;
 
+/*
+lesson 11 Sieve of Eratosthenes 素数筛法的笔记。
+关键在于建立一个N的临时数组，用于标记每个index上是否可能是素数。比如index 8，就表示数字8，因为2+2+2+2的时候会等于8，所以在循环加的时候index 8肯定会被2的倍数加到，也就是我们会把
+index 8上的临时数组的值置为false，表示肯定不是素数。用空间来换时间了。另外，由于因子肯定小于sqrt（N)，所以循环的因子要小于Sqrt（N)，time complexity是O（sqrt（N））
+
+把一个数factorization是拆成素数的乘积，可以上面的方法改造一下，也是一个临时数组，数组记录该index里最小的factor，比如把2的所有倍数的index的value全部填上2， 然后把待拆解的x除以x index
+对应的value，得到一个新的x，然后再除以新的x index的value，直到除到一个x的value为0，也就是这个x是素数
+*/
+
+
+//下面的简单题也有错，一个是复杂度超标，一个是还有错误
+vector<int> CountSemiprimes(int N, vector<int> &P, vector<int> &Q)
+{
+	vector<int> ret;
+	int M = P.size();
+	vector<int> factors(N+1, 0);
+	
+	int i = 2, j = 2;
+	while (i*i < N)
+	{
+		j = i;
+		while (j <= N)
+		{
+			if (factors[j] == 0 && j!=i)
+				factors[j] = i;
+			j += i;
+		}
+		i++;
+	}
+
+	for (int k = 0; k < M; k++)
+	{
+		int count = 0;
+		for (int n = P[k]; n <= Q[k]; n++)
+		{
+			if (factors[n] != 0)
+			{
+
+				int x = n / factors[n];
+				if (x != 1)
+				{
+					if (factors[x]== 0)					
+					{
+							count++;
+					}
+				}
+			}
+		}
+		ret.push_back(count);
+	}
+	
+
+
+	return ret;
+
+}
+
+///
 
 int Distinct(vector<int> &A) {
 	/*ddddad
@@ -193,10 +251,17 @@ int main()
 {
 	//int Array[] = {1,5,3,4,3,4,1,2,3,4,6,2};
 	//int Array[] = { 1,5,9,7,3,4,3,4,1,2,3,4,6,2,20 };
-	int Array[] = {-100,2,4,5};
-	int cnt = sizeof(Array) / sizeof(int);
-	vector<int> A(Array, Array + cnt);
-	int ret = triangle(A);
+	int ArrayP[] = { 1, 4, 16 };
+	int ArrayQ[] = { 26,10,20};
+	//int Array[] = {-100,2,4,5};
+	int cntP = sizeof(ArrayP) / sizeof(int);
+	int cntQ = sizeof(ArrayQ) / sizeof(int);
+	vector<int> P(ArrayP, ArrayP + cntP);
+	vector<int> Q(ArrayQ, ArrayQ + cntQ);
+	//int ret = triangle(A);
+	vector<int> ret;
+	int N = 100;
+	ret = CountSemiprimes(N, P, Q);
 	
     return 0;
 }
