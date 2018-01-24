@@ -8,7 +8,7 @@ using namespace std;
 
 
 int Distinct(vector<int> &A) {
-	/*
+	/*ddddad
 	用空间换时间，codility似乎不在乎element去年创造出来的固定数组，哪怕是2000000个
 	*/
 	// write your code in C++14 (g++ 6.2.0)
