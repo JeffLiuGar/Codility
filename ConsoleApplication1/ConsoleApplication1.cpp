@@ -22,9 +22,10 @@ vector<int> CountSemiprimes(int N, vector<int> &P, vector<int> &Q)
 	vector<int> ret;
 	int M = P.size();
 	vector<int> factors(N+1, 0);
-	
+	vector<int> semiPriCnt(N + 1, 0);
+	//先求出1到N的数组里每个数的最小factor并保存，如果本省是素数，那么factor记为0
 	int i = 2, j = 2;
-	while (i*i < N)
+	while (i*i <= N)
 	{
 		j = i;
 		while (j <= N)
@@ -36,24 +37,31 @@ vector<int> CountSemiprimes(int N, vector<int> &P, vector<int> &Q)
 		i++;
 	}
 
+	//然后求出1到N里每个数是否是semiPrime，如果是，并且把该index上的前面的semiPrime的和求出来，放入临时数组中
+	int semicount =0;
+	for (int i = 2; i <= N; i++)
+	{
+		//if the index i is a semiprimer
+		if (factors[i] != 0)
+		{
+			int x = i / factors[i];
+			if (factors[x] == 0)
+			{
+				semicount++;				
+			}			
+		}
+		semiPriCnt[i] = semicount;		
+	}
+
+	//因为只能用O(M)的算法，所以只能有M次循环，所以，每次循环用上面的preSemiPrimeCnt的数据，右下标的index的值减去左下标的值
+	//这里要注意，需要判断左边本身是不是一个semiPrime,如果是，需要+1. 判断的方法是看看它的值是否大于它左边的value
 	for (int k = 0; k < M; k++)
 	{
 		int count = 0;
-		for (int n = P[k]; n <= Q[k]; n++)
-		{
-			if (factors[n] != 0)
-			{
-
-				int x = n / factors[n];
-				if (x != 1)
-				{
-					if (factors[x]== 0)					
-					{
-							count++;
-					}
-				}
-			}
-		}
+		if (semiPriCnt[P[k]] > semiPriCnt[P[k]-1])
+			count = semiPriCnt[Q[k]] - semiPriCnt[P[k]] + 1;
+		else
+			count = semiPriCnt[Q[k]] - semiPriCnt[P[k]];
 		ret.push_back(count);
 	}
 	
@@ -251,8 +259,8 @@ int main()
 {
 	//int Array[] = {1,5,3,4,3,4,1,2,3,4,6,2};
 	//int Array[] = { 1,5,9,7,3,4,3,4,1,2,3,4,6,2,20 };
-	int ArrayP[] = { 1, 4, 16 };
-	int ArrayQ[] = { 26,10,20};
+	int ArrayP[] = { 1, 1, 1 };
+	int ArrayQ[] = { 4,4,4};
 	//int Array[] = {-100,2,4,5};
 	int cntP = sizeof(ArrayP) / sizeof(int);
 	int cntQ = sizeof(ArrayQ) / sizeof(int);
@@ -260,7 +268,7 @@ int main()
 	vector<int> Q(ArrayQ, ArrayQ + cntQ);
 	//int ret = triangle(A);
 	vector<int> ret;
-	int N = 100;
+	int N = 4;
 	ret = CountSemiprimes(N, P, Q);
 	
     return 0;
