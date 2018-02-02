@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <vector>
 #include <algorithm>
+#include <list>
 using namespace std;
 
 /*
@@ -25,7 +26,7 @@ vector<int> CountSemiprimes(int N, vector<int> &P, vector<int> &Q)
 	vector<int> semiPriCnt(N + 1, 0);
 	//先求出1到N的数组里每个数的最小factor并保存，如果本省是素数，那么factor记为0
 	int i = 2, j = 2;
-	while (i*i <= N)
+	while (i*i <= N)//这里要<=N
 	{
 		j = i;
 		while (j <= N)
@@ -203,6 +204,24 @@ int Flags(vector<int> &A) {
 
 
 /*
+奇数偶数的题，可以考虑xor来做
+0与任何数xor都是任何数，不改变值，所以异或loop的初值可以是0
+*/
+int OddOccurrencesInArray(vector<int> &A) {
+
+	// write your code in C++14 (g++ 6.2.0)
+	int x = 0;
+	for (vector<int>::iterator iter = A.begin(); iter != A.end(); iter++)
+	{
+		x ^= *iter;
+	}
+	return x;
+
+
+}
+
+
+/*
 加法的比较可以考虑排序后再加，后面的数肯定比前面的大，如果相邻的两个数相加后不能大于后面相邻的数，那么肯定更靠后的更大不了
 Int最大是2,147,483,647,两个数相加如果想要结果等于一个longlong，必须把其中一个强转化为long long后再加
 algrithm里有sort，注意使用
@@ -261,6 +280,8 @@ int main()
 	//int Array[] = { 1,5,9,7,3,4,3,4,1,2,3,4,6,2,20 };
 	int ArrayP[] = { 1, 1, 1 };
 	int ArrayQ[] = { 4,4,4};
+	list<int> list;
+	list.assign(ArrayP, ArrayP + 3);
 	//int Array[] = {-100,2,4,5};
 	int cntP = sizeof(ArrayP) / sizeof(int);
 	int cntQ = sizeof(ArrayQ) / sizeof(int);
