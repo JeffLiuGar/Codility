@@ -8,6 +8,64 @@
 //#include <hash_map>
 using namespace std;
 
+
+void QSort(vector<int> &a, int left, int right) {
+	int i, j, pivot;
+
+	//这个if有必要，因为是递归调用，有可能后面调用越界
+	//递归调用，left和right是整个数组的index，也就是说递归的时候，可能是数组的某个区间
+	if (left < right)
+	{
+		//先随便选一个数作为pivot，比如选第一个数，left这个数
+		pivot = a[left];
+		i = left;
+		j = right;
+		while (i < j)
+		{
+			//循环比较右边的数和pivot，如果数等于或者大于pivot，就把j向左移动，也就是说大的数据就留在原位
+			//注意条件里必须有i<j
+			while (i < j && a[j] >= pivot)
+				j--;
+			//循环退出了。因为条件可能是因为i==j退出的，
+			//所以要判断一下是不是因为j减小越界了，如果不是的话，那么我们就要把这个a[j]放到左边
+			//放完了后把i++，因为这个i已经被放置一个比pivot小的数了，我们就从它后面开始比较，寻找比pivot小的数
+			if (i < j)
+				a[i++] = a[j];
+
+			//开始循环比较左边的区间，是否比pivot小，如果不小，就停止增加i，
+			while (i < j && a[i] <= pivot)
+				i++;
+
+			//如果退出了上面的循环，而且不是因为i越界，那么一定是找到了一个比pivot小的数，这时需要把这个数放给右面j停止的位置
+			if (i < j)
+				a[j--] = a[i];
+
+			//上面的循环一次，最多移动了一个比pivot大的和一个比pivot小的，
+			//这个时候如果i<j,那么还要继续循环，直到 i==j,那么也就把整个数组里比pivot小的数据放到了i左边，大的放到了i右边
+
+		}
+		//整个数组里比pivot小的数据放到了i左边，大的放到了i右边
+		//这样i就应该是pivot，
+		a[i] = pivot;
+
+		//然后把i左边的数据进行递归排序
+		QSort(a, left, i - 1);
+		//然后把i右边的数据进行递归排序
+		QSort(a, i + 1, right);
+
+	}
+
+}
+
+
+
+void QuickSort(vector<int>&A){
+
+	QSort(A, 0, A.size() - 1);
+
+
+}
+
 /*
 注意vector的reserve并没有实际分配空间
 resize分配了，所以reserve后不能直接访问，会出现access violation，需要用resize
@@ -319,8 +377,8 @@ int main()
 {
 	//int Array[] = {1,5,3,4,3,4,1,2,3,4,6,2};
 	//int Array[] = { 1,5,9,7,3,4,3,4,1,2,3,4,6,2,20 };
-	int ArrayP[] = { 3, 8, 9, 7, 6 };
-	int ArrayQ[] = { 4,4,4};
+	int ArrayP[] = { 1,5,19,7,80,4,13,4,11,2,55,14,6,2,20 };
+	int ArrayQ[] = { 3,5,1,4,2 };
 	list<int> list;
 	list.assign(ArrayP, ArrayP + 3);
 	//int Array[] = {-100,2,4,5};
@@ -331,7 +389,8 @@ int main()
 	//int ret = triangle(A);
 	vector<int> ret;
 	int N = 4;
-	ret = Shift(P, 3);
+	//ret = Shift(P, 3);
+	QuickSort(Q);
 	
     return 0;
 }
