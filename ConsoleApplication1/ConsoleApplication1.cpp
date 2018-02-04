@@ -5,7 +5,48 @@
 #include <vector>
 #include <algorithm>
 #include <list>
+//#include <hash_map>
 using namespace std;
+
+/*
+注意vector的reserve并没有实际分配空间
+resize分配了，所以reserve后不能直接访问，会出现access violation，需要用resize
+*/
+vector<int> CyclicRotation(vector<int> &A, int K) {
+	// write your code in C++14 (g++ 6.2.0)
+	
+	//get the array size
+	int size = A.size();
+
+	vector<int> ret;
+	int shiftTimes =0 ;//only really need to shift so many times, if the K is bigger than size, only need to shift the K % size times
+
+	ret.resize(size);
+	
+	if (size == 0)
+		goto exit;
+
+	if (size == 1)
+	{
+		ret[0] = A[0];
+		goto exit;
+	}
+	
+	shiftTimes = K % size;
+
+	//get the new index of each element then assign it to the new location
+	for (int i = 0; i < size; i++)
+	{
+		int newindex = (i + shiftTimes) % size;
+		ret[newindex] = A[i];
+	}
+
+
+exit:
+	return ret;
+}
+
+
 
 /*
 lesson 11 Sieve of Eratosthenes 素数筛法的笔记。
@@ -278,7 +319,7 @@ int main()
 {
 	//int Array[] = {1,5,3,4,3,4,1,2,3,4,6,2};
 	//int Array[] = { 1,5,9,7,3,4,3,4,1,2,3,4,6,2,20 };
-	int ArrayP[] = { 1, 1, 1 };
+	int ArrayP[] = { 3, 8, 9, 7, 6 };
 	int ArrayQ[] = { 4,4,4};
 	list<int> list;
 	list.assign(ArrayP, ArrayP + 3);
@@ -290,7 +331,7 @@ int main()
 	//int ret = triangle(A);
 	vector<int> ret;
 	int N = 4;
-	ret = CountSemiprimes(N, P, Q);
+	ret = Shift(P, 3);
 	
     return 0;
 }
