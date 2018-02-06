@@ -4,7 +4,107 @@
 #include "stdafx.h"
 #include <vector>
 #include <algorithm>
+#include <list>
+//#include <hash_map>
 using namespace std;
+
+
+void QSort(vector<int> &a, int left, int right) {
+	int i, j, pivot;
+
+	//这个if有必要，因为是递归调用，有可能后面调用越界
+	//递归调用，left和right是整个数组的index，也就是说递归的时候，可能是数组的某个区间
+	if (left < right)
+	{
+		//先随便选一个数作为pivot，比如选第一个数，left这个数
+		pivot = a[left];
+		i = left;
+		j = right;
+		while (i < j)
+		{
+			//循环比较右边的数和pivot，如果数等于或者大于pivot，就把j向左移动，也就是说大的数据就留在原位
+			//注意条件里必须有i<j
+			while (i < j && a[j] >= pivot)
+				j--;
+			//循环退出了。因为条件可能是因为i==j退出的，
+			//所以要判断一下是不是因为j减小越界了，如果不是的话，那么我们就要把这个a[j]放到左边
+			//放完了后把i++，因为这个i已经被放置一个比pivot小的数了，我们就从它后面开始比较，寻找比pivot小的数
+			if (i < j)
+				a[i++] = a[j];
+
+			//开始循环比较左边的区间，是否比pivot小，如果不小，就停止增加i，
+			while (i < j && a[i] <= pivot)
+				i++;
+
+			//如果退出了上面的循环，而且不是因为i越界，那么一定是找到了一个比pivot小的数，这时需要把这个数放给右面j停止的位置
+			if (i < j)
+				a[j--] = a[i];
+
+			//上面的循环一次，最多移动了一个比pivot大的和一个比pivot小的，
+			//这个时候如果i<j,那么还要继续循环，直到 i==j,那么也就把整个数组里比pivot小的数据放到了i左边，大的放到了i右边
+
+		}
+		//整个数组里比pivot小的数据放到了i左边，大的放到了i右边
+		//这样i就应该是pivot，
+		a[i] = pivot;
+
+		//然后把i左边的数据进行递归排序
+		QSort(a, left, i - 1);
+		//然后把i右边的数据进行递归排序
+		QSort(a, i + 1, right);
+
+	}
+
+}
+
+
+
+void QuickSort(vector<int>&A){
+
+	QSort(A, 0, A.size() - 1);
+
+
+}
+
+/*
+注意vector的reserve并没有实际分配空间
+resize分配了，所以reserve后不能直接访问，会出现access violation，需要用resize
+*/
+vector<int> CyclicRotation(vector<int> &A, int K) {
+	// write your code in C++14 (g++ 6.2.0)
+	
+	//get the array size
+	int size = A.size();
+
+	vector<int> ret;
+	int shiftTimes =0 ;//only really need to shift so many times, if the K is bigger than size, only need to shift the K % size times
+
+	ret.resize(size);
+	
+	if (size == 0)
+		goto exit;
+
+	if (size == 1)
+	{
+		ret[0] = A[0];
+		goto exit;
+	}
+	
+	shiftTimes = K % size;
+
+	//get the new index of each element then assign it to the new location
+	for (int i = 0; i < size; i++)
+	{
+		int newindex = (i + shiftTimes) % size;
+		ret[newindex] = A[i];
+	}
+
+
+exit:
+	return ret;
+}
+
+
 
 /*
 lesson 11 Sieve of Eratosthenes 素数筛法的笔记。
@@ -26,7 +126,7 @@ vector<int> CountSemiprimes(int N, vector<int> &P, vector<int> &Q)
 	vector<int> semiPriCnt(N + 1, 0);
 	//先求出1到N的数组里每个数的最小factor并保存，如果本省是素数，那么factor记为0
 	int i = 2, j = 2;
-	while (i*i <= N)
+	while (i*i <= N)//这里要<=N
 	{
 		j = i;
 		while (j <= N)
@@ -204,6 +304,24 @@ int Flags(vector<int> &A) {
 
 
 /*
+奇数偶数的题，可以考虑xor来做
+0与任何数xor都是任何数，不改变值，所以异或loop的初值可以是0
+*/
+int OddOccurrencesInArray(vector<int> &A) {
+
+	// write your code in C++14 (g++ 6.2.0)
+	int x = 0;
+	for (vector<int>::iterator iter = A.begin(); iter != A.end(); iter++)
+	{
+		x ^= *iter;
+	}
+	return x;
+
+
+}
+
+
+/*
 加法的比较可以考虑排序后再加，后面的数肯定比前面的大，如果相邻的两个数相加后不能大于后面相邻的数，那么肯定更靠后的更大不了
 Int最大是2,147,483,647,两个数相加如果想要结果等于一个longlong，必须把其中一个强转化为long long后再加
 algrithm里有sort，注意使用
@@ -260,8 +378,10 @@ int main()
 {
 	//int Array[] = {1,5,3,4,3,4,1,2,3,4,6,2};
 	//int Array[] = { 1,5,9,7,3,4,3,4,1,2,3,4,6,2,20 };
-	int ArrayP[] = { 1, 1, 1 };
-	int ArrayQ[] = { 4,4,4};
+	int ArrayP[] = { 1,5,19,7,80,4,13,4,11,2,55,14,6,2,20 };
+	int ArrayQ[] = { 3,5,1,4,2 };
+	list<int> list;
+	list.assign(ArrayP, ArrayP + 3);
 	//int Array[] = {-100,2,4,5};
 	int cntP = sizeof(ArrayP) / sizeof(int);
 	int cntQ = sizeof(ArrayQ) / sizeof(int);
@@ -270,7 +390,8 @@ int main()
 	//int ret = triangle(A);
 	vector<int> ret;
 	int N = 4;
-	ret = CountSemiprimes(N, P, Q);
+	//ret = Shift(P, 3);
+	QuickSort(Q);
 	
     return 0;
 }
