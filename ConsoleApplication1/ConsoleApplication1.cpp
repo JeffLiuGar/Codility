@@ -16,7 +16,8 @@ index 8上的临时数组的值置为false，表示肯定不是素数。用空�
 */
 
 
-//下面的简单题也有错，一个是复杂度超标，一个是还有错误
+//原来下面的简单题也有错，一个是复杂度超标，一个是还有错误
+//现在下面的代码没有问题了，用了一个preSum的方法，解决了复杂度的问题，另外一个limit的错误是因为没有i*i<=N，需要==N，包括N
 vector<int> CountSemiprimes(int N, vector<int> &P, vector<int> &Q)
 {
 	vector<int> ret;
