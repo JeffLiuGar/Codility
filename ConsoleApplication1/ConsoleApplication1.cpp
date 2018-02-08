@@ -374,12 +374,64 @@ exit:
 
 }
 
+
+//一定要注意临界区，-2147483648 的abs越界了
+int AbsDistinct(vector<int> &A){
+
+	int leftPos = 0;
+	int rightPos = A.size() - 1;
+	int ret = 0;
+	int pre = 0;
+
+	while (leftPos < rightPos)
+	{
+		if (abs(A[leftPos]) < abs(A[rightPos]))
+		{	//需要判断是否是第一次比较，如果是也需要+1，记录
+			//需要记录上一次的值，如果一样的话，不能再加ret
+			if (pre != A[rightPos] || rightPos == A.size() - 1)
+			{
+				ret += 1;
+				pre = A[rightPos];
+			}				
+			rightPos--;
+		}
+		else if (abs(A[leftPos]) > abs(A[rightPos]))
+		{
+			if (pre != A[leftPos] || leftPos == 0)
+			{
+				ret += 1;
+				pre = A[leftPos];
+			}				
+			leftPos++;
+		}
+		else
+		{
+			if (A[leftPos] != pre || rightPos == A.size() - 1)
+			{
+				ret += 1;
+				pre = A[leftPos];
+			}
+			rightPos--;
+			leftPos++;
+		}		
+
+	}
+	if (A[leftPos] != pre || leftPos == 0)
+	{
+		ret += 1;
+	}
+
+	return ret;
+
+}
+
 int main()
 {
 	//int Array[] = {1,5,3,4,3,4,1,2,3,4,6,2};
 	//int Array[] = { 1,5,9,7,3,4,3,4,1,2,3,4,6,2,20 };
 	int ArrayP[] = { 1,5,19,7,80,4,13,4,11,2,55,14,6,2,20 };
-	int ArrayQ[] = { 3,5,1,4,2 };
+	//int ArrayQ[] = { -5, -3, -1, 0, 3, 6 };
+	int ArrayQ[] = { -2147483648, -1, 0, 1 };
 	list<int> list;
 	list.assign(ArrayP, ArrayP + 3);
 	//int Array[] = {-100,2,4,5};
@@ -391,7 +443,7 @@ int main()
 	vector<int> ret;
 	int N = 4;
 	//ret = Shift(P, 3);
-	QuickSort(Q);
+	AbsDistinct(Q);
 	
     return 0;
 }
