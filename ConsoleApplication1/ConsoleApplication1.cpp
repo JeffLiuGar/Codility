@@ -382,10 +382,18 @@ int AbsDistinct(vector<int> &A){
 	int rightPos = A.size() - 1;
 	int ret = 0;
 	int pre = 0;
+	int intMin = INT32_MIN;
 
 	while (leftPos < rightPos)
 	{
-		if (abs(A[leftPos]) < abs(A[rightPos]))
+		if (INT32_MIN == A[leftPos])
+		{
+			if(pre != INT32_MIN)
+				ret++;
+			pre = INT32_MIN;
+			leftPos++;
+		}
+		else if (abs(A[leftPos]) < abs(A[rightPos]))
 		{	//需要判断是否是第一次比较，如果是也需要+1，记录
 			//需要记录上一次的值，如果一样的话，不能再加ret
 			if (pre != A[rightPos] || rightPos == A.size() - 1)
@@ -431,7 +439,7 @@ int main()
 	//int Array[] = { 1,5,9,7,3,4,3,4,1,2,3,4,6,2,20 };
 	int ArrayP[] = { 1,5,19,7,80,4,13,4,11,2,55,14,6,2,20 };
 	//int ArrayQ[] = { -5, -3, -1, 0, 3, 6 };
-	int ArrayQ[] = { -2147483648, -1, 0, 1 };
+	int ArrayQ[] = { -2147483648i32, -2147483648i32, -2147483648i32 };
 	list<int> list;
 	list.assign(ArrayP, ArrayP + 3);
 	//int Array[] = {-100,2,4,5};
