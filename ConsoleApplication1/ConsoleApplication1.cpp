@@ -5,8 +5,34 @@
 #include <vector>
 #include <algorithm>
 #include <list>
+#include <limits>
 //#include <hash_map>
 using namespace std;
+
+
+
+int bsearch(vector<int> &a, int k)
+{
+
+	int left = 0;
+	int right = a.size() - 1;
+
+	while (left <= right)
+	{
+		int mid = (left + right ) / 2;
+		if (a[mid] < k)
+		{
+			left = mid+1;
+		}
+		else if(a[mid]>k)
+		{
+			right = mid-1;
+		}
+		else
+			return mid;
+	}
+	return -1;
+}
 
 
 void QSort(vector<int> &a, int left, int right) {
