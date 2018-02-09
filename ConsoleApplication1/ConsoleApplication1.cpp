@@ -10,6 +10,28 @@
 using namespace std;
 
 
+//lesson 16 gready algrithom practice, correct
+int TieRopes(vector<int> &A, int K)
+{
+	int size = A.size();
+
+	int i = 0;
+	int len = 0;
+	int count = 0;
+
+	for (; i < size; i++)
+	{
+		len += A[i];
+		if (len >= K)
+		{
+			count++;
+			len = 0;
+		}			
+	}
+
+	return count;
+
+}
 
 int bsearch(vector<int> &a, int k)
 {
