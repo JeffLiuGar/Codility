@@ -9,6 +9,56 @@
 //#include <hash_map>
 using namespace std;
 
+struct tree {
+	int x;
+	tree * l;
+	tree * r;
+};
+
+/*
+future lesson treeheight
+思路是遍历整个tree，然后中间记录每层的深度level
+如果level大于height，就记录height
+用引用的方式每层传递height到下一层
+
+注意：遍历的算法用递归的，如果不用递归怎么写？需要用到stack
+*/
+void GetTreeHeight(tree * T, int level, int &height)
+{
+
+	//int tempLevel = 0;
+	if (NULL == T)
+	{
+		return;
+	}
+	if (height < level)
+		height = level;
+	//level++;
+
+	GetTreeHeight(T->l, level + 1, height);
+
+	GetTreeHeight(T->r, level + 1, height);
+	return;
+
+
+}
+int solution(tree * T) {
+	int level = 0, height = 0;
+	GetTreeHeight(T, level, height);
+	return height;
+}
+
+void TraverseTree(tree * T)
+{
+	if (NULL == T)
+		return;
+
+	TraverseTree(T->l);
+	TraverseTree(T->r);
+
+
+}
+
 
 //lesson 16 gready algrithom practice, correct
 int TieRopes(vector<int> &A, int K)
