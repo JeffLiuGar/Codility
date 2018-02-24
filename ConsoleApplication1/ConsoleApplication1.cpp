@@ -480,15 +480,15 @@ int AbsDistinct(vector<int> &A){
 	int rightPos = A.size() - 1;
 	int ret = 0;
 	int pre = 0;
-	int intMin = INT32_MIN;
+	int intMin = INT_MIN;
 
 	while (leftPos < rightPos)
 	{
-		if (INT32_MIN == A[leftPos])
+		if (INT_MIN == A[leftPos])
 		{
-			if(pre != INT32_MIN)
+			if (pre != INT_MIN)
 				ret++;
-			pre = INT32_MIN;
+			pre = INT_MIN;
 			leftPos++;
 		}
 		else if (abs(A[leftPos]) < abs(A[rightPos]))
@@ -531,13 +531,46 @@ int AbsDistinct(vector<int> &A){
 
 }
 
+/*
+Lesson 16 Greedy Algrithm
+理解错题了，这个很要命，题一定要多读几遍，不要理解错了。
+下面这道题全错了
+*/
+int MaxNonoverlappingSegments(vector<int> &A, vector<int> &B){
+
+	int size = A.size();
+	int ret = 0;
+	
+	if (0 == size || 1 == size)
+		return size;
+	int leftA = A[size - 1];
+	for (int i = size - 1; i > 0; i--)
+	{
+		if (B[i - 1] < leftA)
+		{
+			ret++;
+			leftA = A[i - 1];
+		}
+		else
+		{
+			leftA = min(leftA,min(A[i - 1], A[i]));
+		}
+	}
+
+	if (ret > 0)
+		ret++;
+	return ret;
+
+
+}
+
 int main()
 {
 	//int Array[] = {1,5,3,4,3,4,1,2,3,4,6,2};
 	//int Array[] = { 1,5,9,7,3,4,3,4,1,2,3,4,6,2,20 };
-	int ArrayP[] = { 1,5,19,7,80,4,13,4,11,2,55,14,6,2,20 };
+	int ArrayP[] = { 1, 3, 7, 9, 1 };
 	//int ArrayQ[] = { -5, -3, -1, 0, 3, 6 };
-	int ArrayQ[] = { -2147483648i32, -2147483648i32, -2147483648i32 };
+	int ArrayQ[] = { 5, 6, 8, 9, 10 };
 	list<int> list;
 	list.assign(ArrayP, ArrayP + 3);
 	//int Array[] = {-100,2,4,5};
@@ -549,8 +582,8 @@ int main()
 	vector<int> ret;
 	int N = 4;
 	//ret = Shift(P, 3);
-	AbsDistinct(Q);
-	
+	//AbsDistinct(Q);
+	int iret = MaxNonoverlappingSegments(P, Q);
     return 0;
 }
 
