@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <list>
 #include <limits>
+#include "myString.h"
 //#include <hash_map>
 using namespace std;
 
@@ -564,8 +565,143 @@ int MaxNonoverlappingSegments(vector<int> &A, vector<int> &B){
 
 }
 
+typedef struct _test {
+	char c;
+	short c1;
+	int i;
+	char c2;
+
+} Test;
+
+#define BIT_MASK(Pos) (0x01<<(pos))
+
+int resetBit(int param, int pos)
+{
+	if (pos<0 || pos > sizeof(param))
+		return 0;
+	param &= ~BIT_MASK(pos);
+	return 1;
+}
+
+void printtest()
+{
+	int i = 5.0l;
+	float f = 5;
+
+	printf("%f ", 5);
+	printf("%lf ", 5.0l);
+	printf("%02f ", f);
+	printf("%d ", i);
+	printf("%d ", 5.0l);
+
+}
+
+class testclas
+{
+public:
+
+
+
+
+};
+
+struct _str {
+
+	void func() {
+		printf("ad");
+	}
+};
+
+typedef struct
+{
+	int value;
+	char type;
+}head_t;
+typedef struct
+{
+	head_t head;
+	int para;
+}message_t;
+
+
+void test()
+{
+
+
+		message_t *message = NULL;
+		head_t *head = NULL;
+		message = (message_t *)malloc(sizeof(message_t));
+		//assert(message);
+		memset(message, 0, sizeof(message_t));
+		message->para = 100;
+		message->head.type = 'a';
+		head = (head_t *)message;
+		head->value++;
+		head->type++;
+
+		printf("message->head.value= %d, message->head.type = %c, message->para = %d\n",message->head.value, message->head.type, message->para);
+		free(message);
+		return;
+
+
+
+}
+
+
+
+void f(char**);
+
+void test2()
+{
+	const char * argv[] = { "ab" ,"cd" , "ef" ,"gh", "ij" ,"kl" };
+	f((char **)argv);
+}
+
+void f( char **p)
+{
+	//char* t;
+
+	//t = ;
+
+	printf("%s", (p += sizeof(int))[-1]);
+}
+
 int main()
 {
+	test2();
+	test();
+	//struct _str lkk;
+	//lkk.func();
+	
+	//printtest();
+	myString str("adgadgg");
+	myString str2("adgd");
+	myString str3 = str2+str;
+	str.printString();
+	str2.printString();
+	//str = str2;
+	//str.printString();
+	//myString str3(str2);
+	str3.printString();
+	//char name[10] = "";
+	//const char *str[] = { "adf","adgg","dadkg" };
+
+	//const char **pp = str + 1;
+
+
+	//char c[66] = "adgdga";
+	//int a[5] = {1,2,3,4,5};
+
+	//char *p1 = c;
+	//while (*p1++)
+	//{
+	//	char ccc = *p1;
+	//}
+	//int *p = (int*)(&a + 1);
+	//printf("%d", *(p - 1));
+	//Test tt;
+	//int adad = sizeof(tt);
+	//printf("%08X,%08X,%08X,%08X\n ", &tt.c, &tt.c1, &tt.i, &tt.c2);
 	//int Array[] = {1,5,3,4,3,4,1,2,3,4,6,2};
 	//int Array[] = { 1,5,9,7,3,4,3,4,1,2,3,4,6,2,20 };
 	int ArrayP[] = { 1, 3, 7, 9, 1 };
