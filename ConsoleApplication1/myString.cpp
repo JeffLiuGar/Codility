@@ -38,6 +38,7 @@ myString::myString(const char *pdata )
 
 		cout << "constructor" << endl;
 	}
+	//add some comments
 	
 		
 }
