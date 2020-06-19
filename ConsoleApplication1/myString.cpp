@@ -3,7 +3,7 @@
 #include "myString.h"
 #define MAX_PATH 256
 using namespace std;
-
+//some comments
 
 
 myString::myString()
