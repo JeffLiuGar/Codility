@@ -4,7 +4,7 @@
 #define MAX_PATH 256
 using namespace std;
 //some comments
-
+//some comment3
 
 myString::myString()
 	{
